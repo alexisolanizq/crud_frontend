@@ -1,40 +1,72 @@
 import { client } from "../utils/axios";
 import { useForm } from "react-hook-form";
 import { showToastError, showToastSuccess } from "../utils/toast";
-import { useState } from "react";
 
-const DEFAULT_VALUES = {};
+const DEFAULT_VALUES = {
+  fullName: "",
+  email: "",
+  phone: "",
+  age: "",
+  brithdate: "",
+  jobTitle: "",
+  company: "",
+  address: "",
+  country: "",
+};
 
-const usePersonForm = ({ row = null, isUpdate = false }) => {
-  const [editPerson, setEditPerson] = useState({});
+const usePersonForm = ({ row, isUpdate = false, updateCatalog = () => {} }) => {
   const {
     reset,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: row ?? DEFAULT_VALUES,
+    values: row ?? DEFAULT_VALUES,
   });
 
-  const onSubmit = async (body) => {
+  const onSubmit = async ({
+    id,
+    fullName: full_name,
+    jobTitle: job_title,
+    age,
+    phone,
+    email,
+    birthdate,
+    company,
+    address,
+    country,
+  }) => {
     const payload = {
-      full_name: body.fullName,
-      job_title: body.jobTitle,
-      ...body,
+      id: id ?? null,
+      full_name,
+      job_title,
+      age,
+      phone,
+      email,
+      birthdate,
+      company,
+      address,
+      country,
     };
     if (isUpdate) {
-      const { status, data } = await client.patch("", payload);
-      if (status === 200) {
-        reset();
-        showToastSuccess("Registro actualizado correctamente.");
-      } else {
-        showToastError("Ocurrió un error, intente nuevamente.");
+      try {
+        const { status, data } = await client.patch(`/${payload.id}`, payload);
+        if (status === 200) {
+          reset();
+          updateCatalog();
+          showToastSuccess("Registro actualizado correctamente.");
+        } else {
+          showToastError("Ocurrió un error, intente nuevamente.");
+        }
+      } catch (error) {
+        showToastError(error?.response?.data?.message);
       }
     } else {
       try {
         const { status, data } = await client.post("", payload);
         if (status === 201) {
           reset();
+          updateCatalog();
           showToastSuccess("Se realizo el registro correctamente.");
         } else {
           showToastError("Ocurrió un error, intente nuevamente.");
@@ -49,8 +81,6 @@ const usePersonForm = ({ row = null, isUpdate = false }) => {
     control,
     handleSubmit,
     errors,
-    editPerson,
-    setEditPerson,
     onSubmit,
   };
 };

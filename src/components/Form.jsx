@@ -6,13 +6,11 @@ import Box from "./Box";
 import Button from "./Button";
 import useForm from "../hooks/useForm";
 
-const Form = ({
-  isUpdate = false,
-  row = null,
-}) => {
+const Form = ({ isUpdate = false, row = null, updateCatalog = () => {} }) => {
   const { onSubmit, handleSubmit, control, errors } = useForm({
     row,
     isUpdate,
+    updateCatalog
   });
   return (
     <Box className="w-full lg:w-2/5 lg:mb-10">

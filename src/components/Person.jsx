@@ -6,6 +6,7 @@ import Box from "./Box";
 import Title from "./Title";
 import Flex from "./Flex";
 import Button from "./Button";
+import usePersonForm from "../hooks/useForm";
 
 const Person = () => {
   const { id } = useParams();
@@ -50,6 +51,7 @@ const Person = () => {
             </Flex>
             <Flex justify="end">
               <Button onClick={() => onEdit(person)}>Editar</Button>
+              <Button className="bg-red-600">Eliminar</Button>
             </Flex>
           </>
         )}
