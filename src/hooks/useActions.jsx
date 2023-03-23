@@ -12,8 +12,13 @@ const useActions = () => {
     setRow(payload);
   };
 
+  const onEnd = () => {
+    setRow(null);
+  };
+
   return {
     onEdit,
+    onEnd,
     row,
   };
 };

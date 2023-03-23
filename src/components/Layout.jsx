@@ -8,13 +8,13 @@ import useActions from "../hooks/useActions";
 import useFetch from "../hooks/useFetch";
 
 const Layout = () => {
-  const { row, onEdit } = useActions();
+  const { row, onEdit, onEnd } = useActions();
   const { catalog, totalPages, handlePageClick, getCatalog, onDelete} = useFetch();
   return (
     <div className="container mx-auto mt-10">
       <Header />
       <div className="mt-12 flex flex-col lg:flex-row">
-        <Form updateCatalog={getCatalog} row={row} isUpdate={row !== null} />
+        <Form onEnd={onEnd} updateCatalog={getCatalog} row={row} isUpdate={row !== null} />
         <List
           catalog={catalog}
           handlePageClick={handlePageClick}

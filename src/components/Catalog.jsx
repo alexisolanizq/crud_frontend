@@ -35,7 +35,7 @@ const Catalog = ({ items, onEdit, onDelete }) => (
             >
               Editar
             </Button>
-            <Button className="rounded-none text-xs bg-cyan-600">
+            <Button className="rounded-none text-xs bg-cyan-600" to={`/catalogo/${person.id}`}>
               Ver más
             </Button>
             <Button

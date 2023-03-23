@@ -14,7 +14,12 @@ const DEFAULT_VALUES = {
   country: "",
 };
 
-const usePersonForm = ({ row, isUpdate = false, updateCatalog = () => {} }) => {
+const usePersonForm = ({
+  row,
+  isUpdate = false,
+  onEnd,
+  updateCatalog = () => {},
+}) => {
   const {
     reset,
     control,
@@ -52,7 +57,7 @@ const usePersonForm = ({ row, isUpdate = false, updateCatalog = () => {} }) => {
       try {
         const { status, data } = await client.patch(`/${payload.id}`, payload);
         if (status === 200) {
-          reset();
+          onEnd();
           updateCatalog();
           showToastSuccess("Registro actualizado correctamente.");
         } else {
@@ -63,7 +68,7 @@ const usePersonForm = ({ row, isUpdate = false, updateCatalog = () => {} }) => {
       }
     } else {
       try {
-        const { status, data } = await client.post("", payload);
+        const { status } = await client.post("", payload);
         if (status === 201) {
           reset();
           updateCatalog();

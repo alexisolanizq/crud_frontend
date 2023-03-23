@@ -7,13 +7,16 @@ import Title from "./Title";
 import Flex from "./Flex";
 import Button from "./Button";
 import usePersonForm from "../hooks/useForm";
+import Header from "./Header";
 
 const Person = () => {
   const { id } = useParams();
-  const { person, onEdit } = usePerson({ id });
+  const { person } = usePerson({ id });
+  const birthDate = new Date(person.birthdate).toLocaleDateString('es-ES', {month: 'long', day: '2-digit'})
   return (
-    <Box className="order-last w-full lg:w-3/5 mt-5 lg:mt-0">
-      <Title title={`Datos del usuario (${id})`} />
+    <Box className="order-last w-full mx-auto lg:w-3/5 mt-5 lg:mt-20 relative">
+      <Header />
+      <Title className="my-5" title={`Datos del usuario (${id})`} />
       <div className="bg-white shadow-md rounded-lg py-10 px-5 mx-5">
         {!person ? (
           <Loader />
@@ -27,7 +30,7 @@ const Person = () => {
               <div className="rounded-lg border shadow p-5 w-full mb-4 lg:mb-0 lg:w-[48%]">
                 <p className="text-lg font-semibold">Cumpleaños</p>
                 <p className="text-md">
-                  {person.age} años | {person.birthdate}
+                { birthDate } | {person.age} años
                 </p>
               </div>
               <div className="rounded-lg border shadow p-5 w-full mb-4 lg:mb-0 lg:w-[48%]">
@@ -49,10 +52,9 @@ const Person = () => {
                 </p>
               </div>
             </Flex>
-            <Flex justify="end">
-              <Button onClick={() => onEdit(person)}>Editar</Button>
-              <Button className="bg-red-600">Eliminar</Button>
-            </Flex>
+            <div className="absolute m-4 bottom-10 right-20">
+              <Button isAnimated className="rounded-full p-2" to="/">Volver</Button>
+            </div>
           </>
         )}
       </div>
